@@ -69,6 +69,7 @@
     <div class="dark:bg-gray-900 min-h-screen flex items-center justify-center gap-4">
       <Button label="Primevue Button" />
       <InputText placeholder="Primevue input" />
+      <font-awesome-icon :icon="['fas', 'user-secret']" />
     </div>
 
     <slot />
@@ -79,7 +80,6 @@
 
 <script setup>
 import { useUserStore } from '~/stores/user'
-// import Button from 'primevue/button'
 
 const userStore = useUserStore()
 

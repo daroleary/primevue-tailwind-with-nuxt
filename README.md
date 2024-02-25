@@ -1,5 +1,7 @@
 # Primevue examples
-## 
+
+##
+
 Primevue + presets + tailwind set up provided by https://youtu.be/q5ck18NwYz8?si=fPjBTOLo3bi5pg0V
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.

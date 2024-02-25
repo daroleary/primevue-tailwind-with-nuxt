@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     'nuxt-primevue'
     // '@nuxtjs/supabase',
   ],
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   primevue: {
     unstyled: true,
     importPT: { from: path.resolve(__dirname, './presets/lara/') },
