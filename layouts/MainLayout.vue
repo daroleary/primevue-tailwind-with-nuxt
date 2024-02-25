@@ -64,7 +64,13 @@
     <div id="MainHeader" class="flex items-center w-full bg-white"></div>
     <Loading v-if="userStore.isLoading" />
 
-    <div class="lg:pt-[150px] md:pt-[130px] pt-[80px]" />
+    <div class="lg:pt-[150px] md:pt-[40px] pt-[80px]" />
+
+    <div class="dark:bg-gray-900 min-h-screen flex items-center justify-center gap-4">
+      <Button label="Primevue Button" />
+      <InputText placeholder="Primevue input" />
+    </div>
+
     <slot />
 
     <Footer v-if="!userStore.isLoading" />
@@ -73,6 +79,8 @@
 
 <script setup>
 import { useUserStore } from '~/stores/user'
+// import Button from 'primevue/button'
+
 const userStore = useUserStore()
 
 const isAccountMenu = ref(false)
