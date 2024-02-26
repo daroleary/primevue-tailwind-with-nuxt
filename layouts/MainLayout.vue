@@ -1,90 +1,132 @@
 <template>
-  <div id="MainLayout" class="fixed z-50 w-full">
-    <div id="TopMenu" class="w-full border-b bg-[#FAFAFA] md:block hidden">
-      <ul
-        class="flex h-10 max-w-[1200px] items-center justify-end bg-[#FAFAFA] px-2 text-xs font-light text-[#333333]"
-      >
-        <li class="cursor-pointer border-r border-r-gray-400 px-3 hover:text-[#FF4636]">
-          Primevue
-        </li>
-        <li class="cursor-pointer border-r border-r-gray-400 px-3 hover:text-[#FF4636]">
-          Cookie Preferences
-        </li>
-        <li class="cursor-pointer border-r border-r-gray-400 px-3 hover:text-[#FF4636]">Help</li>
-        <li class="cursor-pointer border-r border-r-gray-400 px-3 hover:text-[#FF4636]">
-          Buyer Protection
-        </li>
-        <li class="px-3 hover:text-[#FF4646] cursor-pointer">
-          <Icon name="ic:sharp-install-mobile" size="17" />
-          App
-        </li>
-        <li
-          class="relative flex items-center px-2.5 hover:text-[#FF4646] h-full cursor-pointer"
-          :class="
-            isAccountMenu
-              ? 'bg-white border z-40 shadow-[0_15px_100px_40px_rgba(0,0,0,0.3)]'
-              : 'border border-[#FAFAFA]'
-          "
-          @mouseenter="isAccountMenu = true"
-          @mouseleave="isAccountMenu = false"
-        >
-          <Icon name="ph:user-thin" size="17" />
-          Account
-          <Icon name="mdi:chevron-down" size="15" class="ml-5" />
-          <div
-            v-if="isAccountMenu"
-            id="AccountMenu"
-            class="absolute bg-white w-[220px] text-[#333333] z-40 top-[38px] -left-[100px] border-x border-b"
-          >
-            <div v-if="true">
-              <div class="text-semibold text-[15px] my-4 px-3">Welcome to Primevue!</div>
-              <div class="flex items-center gap-1 px-3 mb-3">
-                <NuxtLink
-                  to="/auth"
-                  class="bg-[#FF4646] text-center w-full text-[16px] rounded-sm text-white font-semibold"
-                >
-                  Login / Register
-                </NuxtLink>
-              </div>
-            </div>
-            <div class="border-b" />
-            <ul class="bg-white">
-              <li
-                class="text-[13px]py-2 px-4 w-full hover:bg-gray-200"
-                @click="navigateTo('/orders')"
-              >
-                My Orders
-              </li>
-              <li v-if="true" class="text-[13px] py-2 px-4 w-full hover:bg-gray-200">Sign Out</li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+  <main class="max-w-sm mx-auto" style="overflow-y: scroll">
+    <h1>useValidation</h1>
+    <div class="mt-4">
+      <strong>Profile</strong>
     </div>
-    <div id="MainHeader" class="flex items-center w-full bg-white"></div>
-    <Loading v-if="userStore.isLoading" />
-
-    <div class="lg:pt-[150px] md:pt-[40px] pt-[80px]" />
-
-    <div class="dark:bg-gray-900 min-h-screen flex items-center justify-center gap-4">
-      <Button label="Primevue Button" />
-      <InputText placeholder="Primevue input" />
-      <font-awesome-icon :icon="['fas', 'user-secret']" />
+    <div class="w-auto max-w-500">
+      <label class="text-sm" for="name">Name</label>
+      <InputText
+        id="name"
+        v-model="form.name"
+        class="w-full"
+        :class="{ 'p-invalid': !!getError('name') }"
+      />
+      <div class="error">{{ getError('name') }}</div>
+    </div>
+    <div class="w-auto max-w-500">
+      <label class="text-sm" for="email">Email</label>
+      <InputText
+        id="email"
+        v-model="form.email"
+        class="w-full"
+        :class="{ 'p-invalid': !!getError('email') }"
+      />
+      <div class="error">{{ getError('email') }}</div>
+    </div>
+    <div class="w-auto max-w-500">
+      <label class="text-sm" for="website">Website</label>
+      <InputText
+        id="website"
+        v-model="form.website"
+        class="w-full"
+        :class="{ 'p-invalid': !!getError('website') }"
+      />
+      <div class="error">{{ getError('website') }}</div>
+    </div>
+    <div class="mt-4">
+      <strong>Address</strong>
+    </div>
+    <div class="w-auto max-w-500">
+      <label class="text-sm" for="city">City</label>
+      <InputText
+        id="city"
+        v-model="form.address.city"
+        class="w-full"
+        :class="{ 'p-invalid': !!getError('address.city') }"
+      />
+      <div class="error">{{ getError('address.city') }}</div>
+    </div>
+    <div class="w-auto max-w-500">
+      <label class="text-sm" for="city">Street</label>
+      <InputText
+        id="street"
+        v-model="form.address.street"
+        class="w-full"
+        :class="{ 'p-invalid': !!getError('address.street') }"
+      />
+      <div class="error">{{ getError('address.street') }}</div>
+    </div>
+    <div class="flex mt-4">
+      <Button size="small" class="w-auto px-4 py-2" @click="submit">Submit</Button>
     </div>
 
-    <slot />
+    <div class="clear"></div>
+    <hr class="mt-4" />
 
-    <Footer v-if="!userStore.isLoading" />
-  </div>
+    <div class="mt-4">
+      <strong>Form data</strong>
+      <pre>{{ form }}</pre>
+    </div>
+    <div class="clear mt-4">
+      <strong>Valitation errors</strong>
+      <pre>{{ errors }}</pre>
+    </div>
+  </main>
 </template>
 
 <script setup>
-import { useUserStore } from '~/stores/user'
+import { ref } from 'vue'
+import { z } from 'zod'
 
-const userStore = useUserStore()
+const validationSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(1, 'Please enter a valid email'),
+  website: z.string().url('Please enter a valid URL'),
+  address: z.object({
+    street: z.string().min(1, 'The street field is required'),
+    city: z.string().min(1, 'The city field is required')
+  })
+})
 
-const isAccountMenu = ref(false)
+const form = ref({
+  name: '',
+  email: '',
+  website: '',
+  address: {
+    street: '',
+    city: ''
+  }
+})
 
-import Loading from '~/components/BaseLoading.vue'
-import Footer from '~/components/BaseFooter.vue'
+const { validate, errors, isValid, getError, scrolltoError } = useValidation(
+  validationSchema,
+  form,
+  {
+    mode: 'lazy'
+  }
+)
+
+const submit = async () => {
+  await validate()
+
+  if (isValid.value) {
+    alert('Validation succeeded!')
+  } else {
+    scrolltoError('.p-invalid', { offset: 24 })
+  }
+}
 </script>
+
+<style scoped>
+label:after {
+  content: ' *';
+  color: red;
+}
+
+.error {
+  font-size: 14px;
+  color: red;
+  margin-top: 4px;
+}
+</style>

@@ -4,6 +4,9 @@
 
 Primevue + presets + tailwind set up provided by https://youtu.be/q5ck18NwYz8?si=fPjBTOLo3bi5pg0V
 
+# Setting up zod with scroll to errors
+https://dev.to/kouts/a-simple-vue-form-validation-composable-with-zod-38m8
+
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
